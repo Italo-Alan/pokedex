@@ -11,6 +11,7 @@ const spritePokemon = document.querySelector('.normal');
 const spriteAnimado = document.querySelector('.gif');
 const typeOne = document.querySelector('.type_one');
 const typeTwo = document.querySelector('.type_two');
+const pokemonStats = document.querySelectorAll('.pokemonStats');
 
 const fetchPokemon = async (pokemon) =>{
     const apiResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}/`); //Resposta da API, por ser uma Promise, usamos o async e o await(faz com que o código espere a conclusão para retornar uma resposta, mas esse await só pode ser retornado em funçoes assíncronas)
@@ -28,6 +29,7 @@ const renderPokemon = async (pokemon) =>{
     const data = await fetchPokemon(pokemon);
 
     if(data){
+        console.log(data)
         pokemonNome.innerHTML = `${data.name[0].toUpperCase() + data.name.substring(1)}`;
         pokemonId.innerHTML = `#${data.id}  `;
 
@@ -39,10 +41,28 @@ const renderPokemon = async (pokemon) =>{
         spritePokemon.style.width = "150px";
         spriteAnimado.style.width = "60px";
     
-        for(let i = 0; i < data.types.length; i++){
-            typeOne.src = "icons/" + data.types[i].type.name + ".png";
-            i++
-            typeTwo.src = "icons/" + data.types[i].type.name + ".png";
+
+        // console.log(data.types[0]['type'].indexOf(data.types[0].type.name)
+        // if(data.indexOf(data.types[0].type.name) == 1){
+        //     console.log('existe')
+        // }
+
+        // typeOne.src = "icons/" + data.types[0].type.name + ".png";
+
+        // data.type[1].type.name == true ?  typeTwo.src = "icons/" + data.types[1].type.name + ".png" : "";
+
+            // if((data.types[1].type.name).indexOf() == -1){
+            //     let typeTwo = new Image();
+            //     document.querySelector('body').appendChild(typeTwo);
+            //     typeTwo.style.display = "none";
+            //     continue;
+            // }else{
+            //     typeTwo.src = "icons/" + data.types[1].type.name + ".png";
+            // }
+
+
+        for(let i = 0; i < pokemonStats.length; i++){
+            pokemonStats[i].innerHTML = `${data['stats'][i].base_stat}`;
         }
     }else{
         pokemonNome.innerHTML = `Not found`
@@ -54,7 +74,33 @@ const renderPokemon = async (pokemon) =>{
     input.value= "";
 }
 
-renderPokemon('1');
+renderPokemon('4');
+
+var chart = bb.generate({
+    data: {
+      x: "x",
+      columns: [
+      ["x", "HP", "Attack", "Defense", "Especial Attack", "Especial Defense", "Speed"],
+      ["data1",`${data['stats']['0'].base_stat}`, `${data['stats']['1'].base_stat}`,
+               `${data['stats']['2'].base_stat}`, `${data['stats']['3'].base_stat}`,
+               `${data['stats']['4'].base_stat}`, `${data['stats']['5'].base_stat}`]
+      ],
+      type: "radar", // for ESM specify as: radar()
+      labels: true
+    },
+    radar: {
+      axis: {
+        max: 200
+      },
+      level: {
+        depth: 4
+      },
+      direction: {
+        clockwise: true
+      }
+    },
+    bindto: "#radarChart"
+  });
 
 
  
