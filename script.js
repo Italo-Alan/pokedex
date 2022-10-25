@@ -1,8 +1,8 @@
 const form = document.querySelector('form');
 let input = document.querySelector('#input_search');
 form.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    renderPokemon(input.value.toLowerCase());    
+  e.preventDefault();
+  renderPokemon(input.value.toLowerCase());    
 })
 
 const pokemonNome = document.querySelector('.nome');
@@ -49,7 +49,8 @@ const especiesRenderPokemon = async (pokemon) =>{
   let genus = document.querySelector('.genus');
 
   egg.innerHTML = `${data['egg_groups']['0'].name[0].toUpperCase() + data['egg_groups']['0'].name.substring(1)}`;
-  description.innerHTML = `${data['flavor_text_entries']['1'].flavor_text}`;
+  description.innerHTML = `${data['flavor_text_entries']['21'].flavor_text}`;
+  //Maior que 152 entra em frances
   genus.innerHTML = `${data['genera']['7']['genus']}`
 }
 
@@ -85,6 +86,20 @@ const renderPokemon = async (pokemon) =>{
           typeTwo.style.display = "none";
       }
     }
+
+    let abilities = document.querySelector('.abilities');
+    let dataAbilities = [];
+    
+    for(let i = 0; i < data['abilities'].length; i++){
+      dataAbilities.push(`${data['abilities'][i]['ability'].name[0].toUpperCase() + data['abilities'][i]['ability'].name.substring(1)}`) 
+    }   
+
+    let resultAbilities = "";
+    for(let i = 0; i < dataAbilities.length;i++){
+      resultAbilities += `${dataAbilities[i]}, `
+    }
+
+    abilities.innerHTML = resultAbilities.slice(0, -2);
 
     let weight = document.querySelector('.weight');
     let height = document.querySelector('.height');
